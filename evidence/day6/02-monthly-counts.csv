@@ -1,0 +1,7 @@
+layer,source_month,n,note
+bronze,2024-01,2964624,source rows copied unchanged
+bronze,2024-02,3007526,source rows copied unchanged
+silver,2024-01,2964550,accepted rows (74 rejected)
+silver,2024-02,3007504,accepted rows (22 rejected)
+gold,2024-01,2964550,SUM(trip_count) over 6949 rows / 260 zones
+gold,2024-02,3007504,SUM(trip_count) over 6499 rows / 254 zones

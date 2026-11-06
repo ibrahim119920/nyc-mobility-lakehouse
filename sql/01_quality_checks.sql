@@ -1,0 +1,12 @@
+-- Status: these checks are written down as queries to run by hand, not as an
+-- automated test suite. The results collected so far live in evidence/.
+-- Every batch check must take a source_month and not just look at the newest month.
+-- TODO: Bronze COUNT(*) = number of rows in the input file.
+-- TODO: Bronze COUNT(*) = Silver COUNT(*) + number of rows rejected in the batch log.
+-- TODO: Silver has no null required timestamps and no negative duration/distance.
+-- TODO: Gold has no duplicate grain; GROUP BY grain HAVING COUNT(*) > 1 is empty.
+-- TODO: SUM(Gold.trip_count) = COUNT(*) Silver for the same source_month.
+-- TODO: compare business-result snapshots before/after a rerun with a two-way
+--       EXCEPT ALL; row counts alone are not enough.
+-- TODO: compare the other month's partition before/after a batch; it must stay identical.
+-- Remember: ingested_at and Delta versions can change even when the business results do not.

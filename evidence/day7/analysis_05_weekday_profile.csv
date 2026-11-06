@@ -1,0 +1,8 @@
+dow_num,weekday,days_counted,avg_trips_per_day,min_trips,max_trips
+1,Sunday,39,98203,67543,120116
+2,Monday,40,93753,72578,111636
+3,Tuesday,39,109011,69067,131794
+4,Wednesday,39,115793,80419,139771
+5,Thursday,39,121707,61817,143798
+6,Friday,39,113301,74136,138324
+7,Saturday,39,115587,75081,142392

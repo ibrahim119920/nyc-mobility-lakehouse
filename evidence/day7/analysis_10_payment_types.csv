@@ -1,0 +1,7 @@
+payment_type,payment_label,trips,share_pct,avg_fare,tip_pct_of_fare
+1,Credit card,22145463,73.77,19.78,21.94
+2,Cash,4122198,13.73,18.52,0.02
+0,Other (see data dictionary),2997101,9.98,19.62,3.65
+4,Dispute,547378,1.82,1.98,2.46
+3,No charge,208410,0.69,6.53,0.31
+5,Unknown,4,0,15.5,0

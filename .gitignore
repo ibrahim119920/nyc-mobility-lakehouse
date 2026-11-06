@@ -1,0 +1,55 @@
+# Raw dataset and local output; the small synthetic fixture stays tracked.
+/data/*
+!/data/README.md
+*.parquet
+*.parquet.*
+*.delta
+_delta_log/
+*.zip
+*.gz
+/output/
+/outputs/
+/downloads/
+
+# Credentials and machine/workspace-specific configuration.
+config/batch.local.json
+.env
+.env.*
+!.env.example
+.databrickscfg
+.databricks/
+/config/*.local.*
+/config/secrets*
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Caches, virtual environments, Spark, and temporary files.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+.sparkStaging/
+spark-warehouse/
+metastore_db/
+derby.log
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+/tmp/
+/temp/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Selected evidence is tracked; raw exports are not.
+/evidence/raw/

@@ -1,0 +1,11 @@
+{
+  "dataset": "yellow",
+  "catalog": "workspace",
+  "schema": "nyc_mobility",
+  "raw_root": "/Volumes/workspace/nyc_mobility/raw/yellow",
+  "tables": {
+    "bronze": "bronze_yellow_trips",
+    "silver": "silver_yellow_trips",
+    "gold": "gold_daily_pickup_zone"
+  }
+}

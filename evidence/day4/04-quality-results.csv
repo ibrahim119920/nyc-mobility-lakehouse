@@ -1,0 +1,3 @@
+source_month,input_rows,accepted_rows,rejected_rows,fail_pickup_not_null,fail_dropoff_not_null,fail_pu_location_not_null,fail_distance_non_negative,fail_dropoff_not_before_pickup,fail_pickup_in_source_month
+2024-01,2964624,2964550,74,0,0,0,0,56,18
+2024-02,3007526,3007504,22,0,0,0,0,7,15
