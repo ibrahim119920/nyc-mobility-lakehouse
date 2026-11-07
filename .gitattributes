@@ -1,0 +1,9 @@
+# Keep the repository LF everywhere, including on Windows checkouts.
+* text=auto eol=lf
+
+# Binary assets must never be normalised.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.parquet binary
+*.zip binary

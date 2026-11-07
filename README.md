@@ -4,7 +4,7 @@ A small batch lakehouse for NYC TLC Yellow Taxi data, built with **Databricks, P
 
 **Status: run end to end in Databricks.** Nine months of 2024 (January to September) are loaded into Bronze, Silver, and Gold; the month parameter is validated; a February rerun reproduced the same business results without touching January; a failed input wrote nothing; and a Day 7 backfill added March to September through the same job. The claims on this page are backed by the files in [`evidence/`](evidence/README.md).
 
-Scope is deliberately small: one dataset, nine monthly files, four notebooks, three Delta tables, one sequential job. Streaming, dashboards, and CI/CD are not part of it.
+Scope is deliberately small: one dataset, nine monthly files, four notebooks, three Delta tables, one sequential job. Streaming, dashboards, and deployment automation are not part of it; a small GitHub Actions workflow only runs the automated checks.
 
 ## Goals and scope
 
@@ -83,12 +83,33 @@ These are descriptive results, not causal claims. Zones remain numeric IDs.
 
 `evidence/day6/02-monthly-counts.csv` holds the January/February counts in CSV form, and `evidence/README.md` is the index with the full list of honesty notes.
 
+### Selected evidence
+
+![Nine-month reconciliation: Bronze, Silver, rejected, and Gold counts per month](evidence/day7/reconciliation_nine_months.png)
+
+*Nine-month reconciliation after the backfill: `SUM(trip_count)` in Gold matches Silver in every month.*
+
+![Silver rerun comparison printing 2024-01 IDENTIK and 2024-02 IDENTIK](evidence/day6/silver_rerun_v8_v9.png)
+
+*Silver rerun test: snapshot A and snapshot B are identical for both loaded months.*
+
+![Gold top pickup zones histogram](evidence/day5/gold_histogram_top_zones.png)
+
+*Gold daily aggregation: busiest pickup zones.*
+
 ## Folder structure
 
 ```text
 nyc-mobility-lakehouse/
 ├── README.md
+├── LICENSE
 ├── .gitignore
+├── .gitattributes
+├── requirements-dev.txt
+├── pyproject.toml
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── notebooks/
 │   ├── 00_prepare_batch.py
 │   ├── 01_bronze.py
@@ -107,6 +128,9 @@ nyc-mobility-lakehouse/
 │   └── monthly_job.example.json
 ├── tests/
 │   ├── README.md
+│   ├── conftest.py
+│   ├── test_prepare_batch.py
+│   ├── test_repo_contract.py
 │   └── fixtures/
 │       ├── README.md
 │       └── yellow_trips_sample.csv
@@ -126,7 +150,7 @@ nyc-mobility-lakehouse/
     └── day7/
 ```
 
-The `.py` files use the Databricks source format so they read like normal Python in Git and can still be imported as notebooks. `sql/` holds the DDL, the quality-check queries (written down, not automated), and the analysis queries. `config/` holds a credential-free configuration sample. `jobs/` holds a tidied summary of the job settings. `tests/` is still a plan plus a small synthetic fixture. `docs/` holds the contract, the profiling notes, and the work plan. `evidence/` holds the reviewed run evidence.
+The `.py` files use the Databricks source format so they read like normal Python in Git and can still be imported as notebooks. `sql/` holds the DDL, the quality-check queries (written down, not automated), and the analysis queries. `config/` holds a credential-free configuration sample. `jobs/` holds a tidied summary of the job settings. `tests/` holds the automated checks: the prepare/validation notebook is executed with stub platform objects, and the repository contract is asserted. `docs/` holds the contract, the profiling notes, and the work plan. `evidence/` holds the reviewed run evidence.
 
 ## How to rerun
 
@@ -141,6 +165,23 @@ The `.py` files use the Databricks source format so they read like normal Python
 7. To check idempotency, rerun one month and compare the business columns before and after; a rerun adds one Delta version per table and must not change the other months.
 
 `jobs/monthly_job.example.json` is a tidied summary of the job settings, not a deployable export; [`jobs/README.md`](jobs/README.md) explains how to recreate the job. `source_month` defaults to an empty string on purpose: a run without parameters fails validation instead of processing a month whose file may not exist.
+
+## Tests
+
+`tests/` runs without Spark or a Databricks workspace:
+
+- [`tests/test_prepare_batch.py`](tests/test_prepare_batch.py) executes the real `notebooks/00_prepare_batch.py` with stub `dbutils` and `spark` objects, and asserts every rejection path: wrong month format, impossible calendar month, missing `config_path`, incomplete config, missing input file, empty file, and a file with no rows.
+- [`tests/test_repo_contract.py`](tests/test_repo_contract.py) asserts the repository contract: three partitioned Delta tables, a validated month before every `replaceWhere` write, no append, identical widget names, the sequential job chain, no hardcoded workspace path, and that every relative Markdown link resolves.
+
+Run them locally with:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pytest
+ruff check .
+```
+
+The same two commands run in GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) on every push. The Spark transformations and the Databricks integration scenarios are still verified by hand; the scenario list stays in [`tests/README.md`](tests/README.md).
 
 ## Limitations
 
@@ -157,7 +198,11 @@ The `.py` files use the Databricks source format so they read like normal Python
 - The analysis is descriptive and was not packaged as automated tests. The CSV result files contain no run timestamp or query ID. October-December 2024 are not loaded, so no full-year claim is made.
 - Rejected rows are counted and dropped, not stored in a rejected-rows table.
 - The backfill loop and the preflight/snapshot notebook exist only in the Databricks workspace, not in this repository.
-- `tests/` contains a plan and a synthetic fixture; there is no automated test suite yet.
+- The automated tests cover the input-validation notebook and the repository contract, not the Spark transformations: the Silver/Gold rules and the integration scenarios are still verified by hand in Databricks.
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
 
 ## References
 

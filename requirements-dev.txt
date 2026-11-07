@@ -1,0 +1,4 @@
+# Development and CI only. The notebooks run on the Databricks runtime, which
+# already provides PySpark and Delta Lake; nothing here is a runtime dependency.
+pytest>=8.0
+ruff>=0.6

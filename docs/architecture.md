@@ -56,4 +56,4 @@ The batch contract above is implemented in `notebooks/*.py` and was exercised in
 - Job runs, February rerun, failed input: `evidence/day6/06-rerun-comparison.md`
 - Backfill of 2024-03 to 2024-09: `evidence/day7/07-backfill.md`
 
-Known gaps: no automated test suite (`tests/` is still a plan plus a small fixture), the quality queries in `sql/01_quality_checks.sql` are written down but not packaged as a test, and only nine months of one dataset have been processed. For March to September 2024 only row counts, outside-month pickups, dropoff-before-pickup, and schema equality were checked before loading.
+Known gaps: the automated tests cover the input-validation notebook and the repository contract, but the Spark transformations are not covered and the quality queries in `sql/01_quality_checks.sql` are still run by hand, and only nine months of one dataset have been processed. For March to September 2024 only row counts, outside-month pickups, dropoff-before-pickup, and schema equality were checked before loading.

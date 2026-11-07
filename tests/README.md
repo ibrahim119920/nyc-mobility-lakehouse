@@ -1,9 +1,28 @@
 # Test plan
 
-Status: the acceptance scenarios and fixtures have been prepared; there are no
-automated tests yet. The scenarios below were exercised by hand in Databricks
-and the results are stored in `evidence/`. Use synthetic fixtures for small
-iterations and the two monthly files for integration validation.
+Status: input validation and the repository contract are covered by automated
+tests. The acceptance scenarios below are Spark/Databricks integration
+scenarios: they were exercised by hand in Databricks and the results are stored
+in `evidence/`. Use synthetic fixtures for small iterations and the two monthly
+files for integration validation.
+
+## Automated tests
+
+Run from the repository root:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pytest
+ruff check .
+```
+
+| File | Covers |
+| --- | --- |
+| `test_prepare_batch.py` | Executes the real `notebooks/00_prepare_batch.py` with stub `dbutils`/`spark` objects: wrong month format, impossible month, missing `config_path`, incomplete config, missing file, empty file, file with no rows, and the valid path that sets `input_path`. |
+| `test_repo_contract.py` | Three partitioned Delta tables, a validated month before every `replaceWhere` write, no append, identical widget names, the sequential job chain, no hardcoded workspace path, and resolvable relative Markdown links. |
+
+These tests do not need Spark, Delta, or a workspace. The scenarios below do,
+because they assert what the tables contain after a real run.
 
 | Scenario | Expected result |
 | --- | --- |
