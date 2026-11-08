@@ -14,4 +14,4 @@ The plan below is the order the project was actually built in. Evidence for each
 
 The week is done when all three tables hold every processed month (nine months in the end), rerun business results are identical, the other months' partitions are unchanged, a failed input writes no data, and the job runs every stage plus reconciliation.
 
-What is still open: zone-name lookup, automating the quality queries as tests, duration/refund rules, a committed backfill script, and any scheduling. If time is limited, finish idempotency, history, and quality before adding zone lookups, visualizations, optimization, or deployment automation.
+What is still open: zone-name lookup, automating the quality queries as tests, duration/refund rules, a committed backfill script, and any scheduling. [`docs/known_gaps.md`](known_gaps.md) records each one with its impact and what closing it would take. If time is limited, finish idempotency, history, and quality before adding zone lookups, visualizations, optimization, or deployment automation.

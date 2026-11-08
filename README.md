@@ -1,5 +1,7 @@
 # nyc-mobility-lakehouse
 
+[![tests](https://github.com/ibrahim119920/nyc-mobility-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/ibrahim119920/nyc-mobility-lakehouse/actions/workflows/ci.yml)
+
 A small batch lakehouse for NYC TLC Yellow Taxi data, built with **Databricks, PySpark, SQL, and Delta Lake**.
 
 **Status: run end to end in Databricks.** Nine months of 2024 (January to September) are loaded into Bronze, Silver, and Gold; the month parameter is validated; a February rerun reproduced the same business results without touching January; a failed input wrote nothing; and a Day 7 backfill added March to September through the same job. The claims on this page are backed by the files in [`evidence/`](evidence/README.md).
@@ -138,6 +140,7 @@ nyc-mobility-lakehouse/
 │   └── README.md
 ├── docs/
 │   ├── architecture.md
+│   ├── known_gaps.md
 │   ├── schema_notes.md
 │   └── week_plan.md
 └── evidence/
@@ -199,6 +202,8 @@ The same two commands run in GitHub Actions ([`.github/workflows/ci.yml`](.githu
 - Rejected rows are counted and dropped, not stored in a rejected-rows table.
 - The backfill loop and the preflight/snapshot notebook exist only in the Databricks workspace, not in this repository.
 - The automated tests cover the input-validation notebook and the repository contract, not the Spark transformations: the Silver/Gold rules and the integration scenarios are still verified by hand in Databricks.
+
+Each gap above, together with the ones recorded only in the evidence notes, is tracked with its impact and next step in [`docs/known_gaps.md`](docs/known_gaps.md).
 
 ## License
 
